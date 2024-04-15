@@ -19,9 +19,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * This class handles fetching a joke via the ChatGPT API, but is IP-rate limited.
  */
 @RestController
-@RequestMapping("/api/v1/jokelimited")
+@RequestMapping("/api/v1/travellimited")
 @CrossOrigin(origins = "*")
-public class JokeLimitedController {
+public class TravelLimitedController {
 
     @Value("${app.bucket_capacity}")
     private int BUCKET_CAPACITY;
@@ -41,7 +41,7 @@ public class JokeLimitedController {
      *
      * @param service
      */
-    public JokeLimitedController(OpenAiService service) {
+    public TravelLimitedController(OpenAiService service) {
         this.service = service;
     }
 
@@ -73,7 +73,7 @@ public class JokeLimitedController {
      * @return the response from ChatGPT.
      */
     @GetMapping()
-    public MyResponse getJokeLimited(@RequestParam String traveltext, HttpServletRequest request) {
+    public MyResponse getTravelLimited(@RequestParam String traveltext, HttpServletRequest request) {
 
         // Get the IP of the client.
         String ip = request.getRemoteAddr();
@@ -85,6 +85,6 @@ public class JokeLimitedController {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Too many requests, try again later");
         }
         // Otherwise request a joke and return the response.
-        return service.makeRequest(traveltext, JokeController.SYSTEM_MESSAGE);
+        return service.makeRequest(traveltext, TravelController.SYSTEM_MESSAGE);
     }
 }

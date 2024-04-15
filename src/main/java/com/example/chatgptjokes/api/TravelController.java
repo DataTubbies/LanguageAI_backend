@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
  * This class handles fetching a joke via the ChatGPT API
  */
 @RestController
-@RequestMapping("/api/v1/joke")
+@RequestMapping("/api/v1/travel")
 @CrossOrigin(origins = "*")
-public class JokeController {
+public class TravelController {
 
     private final OpenAiService service;
 
@@ -26,7 +26,7 @@ public class JokeController {
      *
      * @param service
      */
-    public JokeController(OpenAiService service) {
+    public TravelController(OpenAiService service) {
         this.service = service;
     }
 
@@ -37,7 +37,7 @@ public class JokeController {
      * @return the response from ChatGPT.
      */
     @GetMapping
-    public MyResponse getJoke(@RequestParam String about) {
+    public MyResponse getTravel(@RequestParam String about) {
 
         return service.makeRequest(about, SYSTEM_MESSAGE);
     }
