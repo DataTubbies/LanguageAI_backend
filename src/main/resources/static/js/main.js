@@ -9,7 +9,7 @@ async function getJoke(event) {
     // Prevent the form from reloading the page.
     event.preventDefault();
 
-    const URL = `${SERVER_URL}joke?about= + ${document.getElementById('traveltext').value}`
+    const URL = `${SERVER_URL}joke?about= + ${document.getElementById('about').value}`
     const spinner = document.getElementById('spinner1');
     const result = document.getElementById('result');
     result.style.color = "black";
