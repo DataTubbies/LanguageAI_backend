@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
 
 @Entity
 public class ApiUsage {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
-  private String promptTokens;
-  private int completionTokens;
-  private int totalTokens;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String promptTokens;
+    private int completionTokens;
+    private int totalTokens;
 
-  private String prompt;
+    private String prompt;
 
-  @CreationTimestamp
-  LocalDateTime created;
+    @CreationTimestamp
+    LocalDateTime created;
 
 }
