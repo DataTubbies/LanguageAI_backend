@@ -68,12 +68,12 @@ public class TravelLimitedController {
     /**
      * Handles the request from the browser.
      *
-     * @param about   about contains the input that ChatGPT uses to make a joke about.
+     * @param about  contains the input that ChatGPT uses to make a joke about.
      * @param request the current HTTP request used
      * @return the response from ChatGPT.
      */
     @GetMapping()
-    public MyResponse getTravelLimited(@RequestParam String traveltext, HttpServletRequest request) {
+    public MyResponse getTravelLimited(@RequestParam String about, HttpServletRequest request) {
 
         // Get the IP of the client.
         String ip = request.getRemoteAddr();
@@ -85,6 +85,6 @@ public class TravelLimitedController {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Too many requests, try again later");
         }
         // Otherwise request a joke and return the response.
-        return service.makeRequest(traveltext, TravelController.SYSTEM_MESSAGE);
+        return service.makeRequest(about, TravelController.SYSTEM_MESSAGE);
     }
 }

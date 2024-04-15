@@ -37,7 +37,7 @@ public class TravelController {
      * @return the response from ChatGPT.
      */
     @GetMapping
-    public MyResponse getTravel(@RequestParam String about) {
+    public MyResponse getTravel(@RequestBody String about) {
 
         return service.makeRequest(about, SYSTEM_MESSAGE);
     }
