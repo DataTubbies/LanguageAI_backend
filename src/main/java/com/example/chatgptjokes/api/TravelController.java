@@ -18,8 +18,9 @@ public class TravelController {
     /**
      * This contains the message to the ChatGPT API, telling the AI how it should act in regard to the requests it gets.
      */
-    final static String SYSTEM_MESSAGE = "You are a helpful assistant that delivers a travel destination, transport, accommodation and activity suggestions." +
+    final static String SYSTEM_MESSAGE = "You are a helpful travel guide that delivers a travel destination, transport, accommodation and activity suggestions." +
             " Keep the answer to a maximum of 1000 words, and within these 4 sections: Destination, Transport, Accommodation, and Activities." +
+            " Always start with the destination as the first word in a format of: city, country" +
             " The user should provide a start location, budget, destination, time of year, and duration. Destination can be optional, in which case you must provide a fitting choice." +
             " if starting location is optional, you need to only provide an activity guide" +
             " If an input is lacking anything except the destination or the starting location, ignore the content of the question and ask the user to provide the necessary inputs.";
@@ -49,7 +50,8 @@ public class TravelController {
                     about.getBudget() + "danish kroner " +
                     " from " + about.getStartingLocation() +
                     " in " + about.getMonth() +
-                    " for " + about.getDuration() + " days, give me a suggestion for a destination.";
+                    " for " + about.getDuration() + " days, give me a suggestion for a destination." +
+                    " give me a different destination from last time.";
 
         } else if (about.getStartingLocation()==null) {
             userPrompt = "I want an activity guide with a budget of " +
@@ -57,8 +59,7 @@ public class TravelController {
                     " in " + about.getDestination() +
                     " in " + about.getMonth() +
                     " for " + about.getDuration() + " days.";
-        }
-        else {
+        } else {
             userPrompt = "I want to travel with a budget of " +
                     about.getBudget() + "danish kroner " +
                     " to " + about.getDestination() +
