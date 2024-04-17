@@ -50,8 +50,7 @@ public class TravelController {
                     about.getBudget() + "danish kroner " +
                     " from " + about.getStartingLocation() +
                     " in " + about.getMonth() +
-                    " for " + about.getDuration() + " days, give me a suggestion for a destination." +
-                    " give me a different destination from last time.";
+                    " for " + about.getDuration() + " days, give me a suggestion for a destination.";
 
         } else if (about.getStartingLocation()==null) {
             userPrompt = "I want an activity guide with a budget of " +

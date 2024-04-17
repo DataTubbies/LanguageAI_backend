@@ -16,10 +16,13 @@ import java.util.Map;
 public class MyResponse {
     String answer;
     List<Map<String, String>> messages;
+    String cityPhoto;
 
-    public MyResponse(String answer) {
+    public MyResponse(String answer,String cityPhoto) {
         this.answer = answer;
+        this.cityPhoto = cityPhoto;
     }
+
 
     public MyResponse(String answer, List<Map<String, String>> messages) {
         this.answer = answer;

@@ -1,5 +1,6 @@
 package com.example.chatgptjokes.service;
 
+import com.example.chatgptjokes.dtos.PexelsApiResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ public class PexelsApiClient {
                 .build();
     }
 
-    public Mono<Object> searchPhotos(String query, int perPage) {
+    public Mono<PexelsApiResponse> searchPhotos(String query, int perPage) {
         return client.get()
                 .uri(uriBuilder -> uriBuilder.path("/search")
                         .queryParam("query", query)
@@ -27,6 +28,6 @@ public class PexelsApiClient {
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(Object.class);
+                .bodyToMono(PexelsApiResponse.class);
     }
 }

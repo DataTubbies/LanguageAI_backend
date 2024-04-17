@@ -94,7 +94,7 @@ public class OpenAiServiceV1 {
             System.out.print("Tokens used: " + tokensUsed);
             System.out.print(". Cost ($0.0015 / 1K tokens) : $" + String.format("%6f", (tokensUsed * 0.0015 / 1000)));
             System.out.println(". For 1$, this is the amount of similar requests you can make: " + Math.round(1 / (tokensUsed * 0.0015 / 1000)));
-            return new MyResponse(responseMsg);
+            return new MyResponse(responseMsg, "berlin");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             String msg = "Internal Server Error, while processing request. You could try again" +

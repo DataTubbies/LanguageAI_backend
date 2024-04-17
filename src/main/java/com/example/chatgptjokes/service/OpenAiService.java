@@ -1,9 +1,6 @@
 package com.example.chatgptjokes.service;
 
-import com.example.chatgptjokes.dtos.ChatCompletionRequest;
-import com.example.chatgptjokes.dtos.ChatCompletionResponse;
-import com.example.chatgptjokes.dtos.MyResponse;
-import com.example.chatgptjokes.dtos.TravelDto;
+import com.example.chatgptjokes.dtos.*;
 import com.example.chatgptjokes.entity.ApiUsage;
 import com.example.chatgptjokes.repository.ApiUsageRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,8 +14,11 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.sql.SQLOutput;
+import java.util.List;
 
 /*
 This code utilizes WebClient along with several other classes from org.springframework.web.reactive.
@@ -65,9 +65,12 @@ public class OpenAiService {
 
     private final ApiUsageRepository apiUsageRepository;
 
-    public OpenAiService(ApiUsageRepository apiUsageRepository) {
+    private final PexelsApiClient pexelsApiClient;
+
+    public OpenAiService(ApiUsageRepository apiUsageRepository, PexelsApiClient pexelsApiClient) {
         this.client = WebClient.create();
         this.apiUsageRepository = apiUsageRepository;
+        this.pexelsApiClient = pexelsApiClient;
     }
 
     //Use this constructor for testing, to inject a mock client
@@ -106,6 +109,10 @@ public class OpenAiService {
                     .bodyToMono(ChatCompletionResponse.class)
                     .block();
             String responseMsg = response.getChoices().get(0).getMessage().getContent();
+
+            String cityNameSubString = responseMsg.split(" ")[1].trim();
+            String cityName = cityNameSubString.substring(0, cityNameSubString.length() - 1);
+
             int tokensUsed = response.getUsage().getTotal_tokens();
             System.out.print("Tokens used: " + tokensUsed);
             System.out.print(". Cost ($0.0015 / 1K tokens) : $" + String.format("%6f", (tokensUsed * 0.0015 / 1000)));
@@ -119,7 +126,17 @@ public class OpenAiService {
             apiUsage.setTotalTokens(tokensUsed + requestDto.getMessages().get(0).getContent().split(" ").length);
             apiUsageRepository.save(apiUsage);
 
-            return new MyResponse(responseMsg);
+            Mono<PexelsApiResponse> responseMono = pexelsApiClient.searchPhotos(cityName, 1);
+            return responseMono.flatMap(res -> {
+                List<PexelsApiResponse.Photo> photos = res.getPhotos();
+                String cityPhoto = photos.isEmpty() ? null : photos.get(0).getSrc().getOriginal();
+                System.out.println("City photo: " + cityPhoto);
+                return Mono.just(new MyResponse(responseMsg, cityPhoto));
+            }).block();
+
+
+
+
         } catch (WebClientResponseException e) {
             //This is how you can get the status code and message reported back by the remote API
             logger.error("Error response status code: " + e.getRawStatusCode());
