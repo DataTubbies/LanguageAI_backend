@@ -3,6 +3,9 @@ package com.example.chatgptjokes.service;
 import com.example.chatgptjokes.dtos.ChatCompletionRequest;
 import com.example.chatgptjokes.dtos.ChatCompletionResponse;
 import com.example.chatgptjokes.dtos.MyResponse;
+import com.example.chatgptjokes.dtos.TravelDto;
+import com.example.chatgptjokes.entity.ApiUsage;
+import com.example.chatgptjokes.repository.ApiUsageRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +32,6 @@ understand what's going on in this code.
 
 @Service
 public class OpenAiService {
-
     public static final Logger logger = LoggerFactory.getLogger(OpenAiService.class);
 
     @Value("${app.api-key}")
@@ -61,14 +63,20 @@ public class OpenAiService {
 
     private WebClient client;
 
-    public OpenAiService() {
+    private final ApiUsageRepository apiUsageRepository;
+
+    public OpenAiService(ApiUsageRepository apiUsageRepository) {
         this.client = WebClient.create();
+        this.apiUsageRepository = apiUsageRepository;
     }
 
     //Use this constructor for testing, to inject a mock client
-    public OpenAiService(WebClient client) {
+    /*
+    public OpenAiService(WebClient client, ApiUsageRepository apiUsageRepository) {
         this.client = client;
+        this.apiUsageRepository = apiUsageRepository;
     }
+    */
 
     public MyResponse makeRequest(String userPrompt, String _systemMessage) {
 
@@ -102,6 +110,15 @@ public class OpenAiService {
             System.out.print("Tokens used: " + tokensUsed);
             System.out.print(". Cost ($0.0015 / 1K tokens) : $" + String.format("%6f", (tokensUsed * 0.0015 / 1000)));
             System.out.println(". For 1$, this is the amount of similar requests you can make: " + Math.round(1 / (tokensUsed * 0.0015 / 1000)));
+
+
+            ApiUsage apiUsage = new ApiUsage();
+            apiUsage.setPrompt(userPrompt);
+            apiUsage.setPromptTokens(requestDto.getMessages().get(1).getContent().split(" ").length);
+            apiUsage.setCompletionTokens(tokensUsed);
+            apiUsage.setTotalTokens(tokensUsed + requestDto.getMessages().get(0).getContent().split(" ").length);
+            apiUsageRepository.save(apiUsage);
+
             return new MyResponse(responseMsg);
         } catch (WebClientResponseException e) {
             //This is how you can get the status code and message reported back by the remote API

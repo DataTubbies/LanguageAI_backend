@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
 public class TravelDto {
     private int budget;
     private String destination;
@@ -25,6 +24,3 @@ public class TravelDto {
         this.duration = duration;
     }
 }
-
-
-
