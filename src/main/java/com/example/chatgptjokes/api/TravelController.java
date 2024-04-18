@@ -19,7 +19,7 @@ public class TravelController {
      * This contains the message to the ChatGPT API, telling the AI how it should act in regard to the requests it gets.
      */
     final static String SYSTEM_MESSAGE = "You are a helpful travel planner that delivers a travel destination, transport, accommodation and activity suggestions." +
-            " Keep the answer to a maximum of 1000 words, and within these 4 sections: Destination, Transport, Accommodation, and Activities." +
+            " Try to keep the answer to a maximum of 1000 words, and within these 4 sections: Destination, Transport, Accommodation, and Activities." +
             " Always start with the destination as the first word in a format of: city, country" +
             " The user should provide a start location, budget, number of people, destination, time of year, and duration. Destination can be optional, in which case you must provide a fitting choice." +
             " if starting location is optional, you need to only provide an activity guide" +
@@ -43,33 +43,7 @@ public class TravelController {
     @PostMapping
     public MyResponse postTravel(@RequestBody TravelDto about) {
 
-        String userPrompt;
-
-        if (about.getDestination()==null) {
-            userPrompt = "I want to travel with a budget of " +
-                    about.getBudget() + "danish kroner " +
-                    " for " + about.getNumberOfPeople() + " people" +
-                    " from " + about.getStartingLocation() +
-                    " in " + about.getMonth() +
-                    " for " + about.getDuration() + " days, give me a suggestion for a destination.";
-
-        } else if (about.getStartingLocation()==null) {
-            userPrompt = "I want an activity guide with a budget of " +
-                    about.getBudget() + "danish kroner " +
-                    " for " + about.getNumberOfPeople() + " people" +
-                    " in " + about.getDestination() +
-                    " in " + about.getMonth() +
-                    " for " + about.getDuration() + " days.";
-        } else {
-            userPrompt = "I want to travel with a budget of " +
-                    about.getBudget() + "danish kroner " +
-                    " for " + about.getNumberOfPeople() + " people" +
-                    " to " + about.getDestination() +
-                    " from " + about.getStartingLocation() +
-                    " in " + about.getMonth() +
-                    " for " + about.getDuration() + " days.";
-        }
-
+       String userPrompt =  service.generateUserPrompt(about);
         return service.makeRequest(userPrompt, SYSTEM_MESSAGE);
     }
 }

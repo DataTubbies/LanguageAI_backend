@@ -89,6 +89,7 @@ public class OpenAiService {
         if (about.getDestination()==null) {
             userPrompt = "I want to travel with a budget of " +
                     about.getBudget() + "danish kroner " +
+                    " for " + about.getNumberOfPeople() + " people" +
                     " from " + about.getStartingLocation() +
                     " in " + about.getMonth() +
                     " for " + about.getDuration() + " days, give me a suggestion for a destination.";
@@ -96,17 +97,20 @@ public class OpenAiService {
         } else if (about.getStartingLocation()==null) {
             userPrompt = "I want an activity guide with a budget of " +
                     about.getBudget() + "danish kroner " +
+                    " for " + about.getNumberOfPeople() + " people" +
                     " in " + about.getDestination() +
                     " in " + about.getMonth() +
                     " for " + about.getDuration() + " days.";
         } else {
             userPrompt = "I want to travel with a budget of " +
                     about.getBudget() + "danish kroner " +
+                    " for " + about.getNumberOfPeople() + " people" +
                     " to " + about.getDestination() +
                     " from " + about.getStartingLocation() +
                     " in " + about.getMonth() +
                     " for " + about.getDuration() + " days.";
         }
+
         return userPrompt;
     }
     public MyResponse makeRequest(String userPrompt, String _systemMessage) {
