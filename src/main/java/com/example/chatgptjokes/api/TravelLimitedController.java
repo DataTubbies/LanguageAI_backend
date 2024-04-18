@@ -1,6 +1,7 @@
 package com.example.chatgptjokes.api;
 
 import com.example.chatgptjokes.dtos.MyResponse;
+import com.example.chatgptjokes.dtos.TravelDto;
 import com.example.chatgptjokes.service.OpenAiService;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -23,6 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @CrossOrigin(origins = "*")
 public class TravelLimitedController {
 
+
+
     @Value("${app.bucket_capacity}")
     private int BUCKET_CAPACITY;
 
@@ -41,8 +44,8 @@ public class TravelLimitedController {
      *
      * @param service
      */
-    public TravelLimitedController(OpenAiService service) {
-        this.service = service;
+    public TravelLimitedController( OpenAiService service) {
+this.service=service;
     }
 
     /**
@@ -72,8 +75,8 @@ public class TravelLimitedController {
      * @param request the current HTTP request used
      * @return the response from ChatGPT.
      */
-    @GetMapping()
-    public MyResponse getTravelLimited(@RequestParam String about, HttpServletRequest request) {
+    @PostMapping()
+    public MyResponse postTravelLimited(@RequestBody TravelDto about, HttpServletRequest request) {
 
         // Get the IP of the client.
         String ip = request.getRemoteAddr();
@@ -85,6 +88,7 @@ public class TravelLimitedController {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Too many requests, try again later");
         }
         // Otherwise request a joke and return the response.
-        return service.makeRequest(about, TravelController.SYSTEM_MESSAGE);
+       String userPrompt = service.generateUserPrompt(about);
+        return service.makeRequest(userPrompt, TravelController.SYSTEM_MESSAGE);
     }
 }
