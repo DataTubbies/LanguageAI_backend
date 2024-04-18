@@ -7,6 +7,9 @@ import lombok.Setter;
 @Setter
 public class TravelDto {
     private int budget;
+
+    private int numberOfPeople;
+
     private String destination;
 
     private String startingLocation;
@@ -16,8 +19,9 @@ public class TravelDto {
    private int duration;
 
 
-    public TravelDto(int budget, String destination, String startingLocation, String month, int duration) {
+    public TravelDto(int budget, int numberOfPeople, String destination, String startingLocation, String month, int duration) {
         this.budget = budget;
+        this.numberOfPeople = numberOfPeople;
         this.destination = destination;
         this.startingLocation = startingLocation;
         this.month = month;

@@ -21,7 +21,7 @@ public class TravelController {
     final static String SYSTEM_MESSAGE = "You are a helpful travel planner that delivers a travel destination, transport, accommodation and activity suggestions." +
             " Keep the answer to a maximum of 1000 words, and within these 4 sections: Destination, Transport, Accommodation, and Activities." +
             " Always start with the destination as the first word in a format of: city, country" +
-            " The user should provide a start location, budget, destination, time of year, and duration. Destination can be optional, in which case you must provide a fitting choice." +
+            " The user should provide a start location, budget, number of people, destination, time of year, and duration. Destination can be optional, in which case you must provide a fitting choice." +
             " if starting location is optional, you need to only provide an activity guide" +
             " If an input is lacking anything except the destination or the starting location, ignore the content of the question and ask the user to provide the necessary inputs.";
 
@@ -48,6 +48,7 @@ public class TravelController {
         if (about.getDestination()==null) {
             userPrompt = "I want to travel with a budget of " +
                     about.getBudget() + "danish kroner " +
+                    " for " + about.getNumberOfPeople() + " people" +
                     " from " + about.getStartingLocation() +
                     " in " + about.getMonth() +
                     " for " + about.getDuration() + " days, give me a suggestion for a destination.";
@@ -55,12 +56,14 @@ public class TravelController {
         } else if (about.getStartingLocation()==null) {
             userPrompt = "I want an activity guide with a budget of " +
                     about.getBudget() + "danish kroner " +
+                    " for " + about.getNumberOfPeople() + " people" +
                     " in " + about.getDestination() +
                     " in " + about.getMonth() +
                     " for " + about.getDuration() + " days.";
         } else {
             userPrompt = "I want to travel with a budget of " +
                     about.getBudget() + "danish kroner " +
+                    " for " + about.getNumberOfPeople() + " people" +
                     " to " + about.getDestination() +
                     " from " + about.getStartingLocation() +
                     " in " + about.getMonth() +
