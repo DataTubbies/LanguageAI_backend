@@ -19,7 +19,7 @@ public class TravelController {
      * This contains the message to the ChatGPT API, telling the AI how it should act in regard to the requests it gets.
      */
     final static String SYSTEM_MESSAGE = "You are a helpful travel planner that delivers a travel destination, transport, accommodation and activity suggestions." +
-            " Try to keep the answer short to a maximum of 1000 words, and within these 4 sections: Destination, Transport, Accommodation, and Activities." +
+            " Try to keep the answer short to a maximum of 1000 words, and within these 4 sections: Destination, Transport, Accommodation, and Activities. " +
             " Always start with the destination as the first word in a format of: city, country" +
             " The user should provide a start location, budget, number of people, destination, time of year, and duration. Destination can be optional, in which case you must provide a fitting choice." +
             " if starting location is optional, you need to only provide an activity guide" +

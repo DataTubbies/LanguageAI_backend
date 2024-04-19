@@ -142,8 +142,20 @@ public class OpenAiService {
                     .block();
             String responseMsg = response.getChoices().get(0).getMessage().getContent();
 
+            int transportStart = responseMsg.indexOf("\n\nTransport");
+            int accommodationStart = responseMsg.indexOf("\n\nAccommodation");
+            int activitiesStart = responseMsg.indexOf("\n\nActivities");
+
             String cityNameSubString = responseMsg.split(" ")[1].trim();
             String cityName = cityNameSubString.substring(0, cityNameSubString.length() - 1);
+
+            String transport = responseMsg.substring(transportStart,accommodationStart);
+            String accommodation = responseMsg.substring(accommodationStart,activitiesStart);
+            String activities = responseMsg.substring(activitiesStart);
+
+
+
+
 
             int tokensUsed = response.getUsage().getTotal_tokens();
             System.out.print("Tokens used: " + tokensUsed);
@@ -163,7 +175,7 @@ public class OpenAiService {
                 List<PexelsApiResponse.Photo> photos = res.getPhotos();
                 String cityPhoto = photos.isEmpty() ? null : photos.get(0).getSrc().getOriginal();
                 System.out.println("City photo: " + cityPhoto);
-                return Mono.just(new MyResponse(responseMsg, cityPhoto));
+                return Mono.just(new MyResponse(responseMsg, cityPhoto, cityName, transport, accommodation, activities));
             }).block();
 
 

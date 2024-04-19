@@ -17,9 +17,19 @@ public class MyResponse {
     String answer;
     List<Map<String, String>> messages;
     String cityPhoto;
+    String destination;
+    String transport;
 
-    public MyResponse(String answer,String cityPhoto) {
+    String accommodation;
+    String activities;
+
+
+    public MyResponse(String answer,String cityPhoto, String destination, String transport, String accommodation, String activities) {
         this.answer = answer;
+        this.destination = destination;
+        this.transport = transport;
+        this.accommodation = accommodation;
+        this.activities = activities;
         this.cityPhoto = cityPhoto;
     }
 
