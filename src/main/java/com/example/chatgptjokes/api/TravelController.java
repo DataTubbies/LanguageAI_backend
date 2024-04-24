@@ -22,8 +22,7 @@ public class TravelController {
             " Try to keep the answer short to a maximum of 1000 words, and within these 4 sections: Destination, Transport, Accommodation, and Activities. " +
             " Always start in a format of: Destination: city, country" +
             " The user should provide a start location, budget, number of people, destination, time of year, and duration. Destination can be optional, in which case you must provide a fitting choice." +
-            " if starting location is optional, you need to only provide an activity guide" +
-            " If an input is lacking anything except the destination or the starting location, ignore the content of the question and ask the user to provide the necessary inputs.";
+            " if starting location is optional, you need to only provide an activity guide";
 
     /**
      * The controller called from the browser client.
